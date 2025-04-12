@@ -5,5 +5,5 @@ CFLAGS := -lrmr_si -I$(RMR_INC_PATH)
 afl: harness
   RMR_SEED_RT=./routes.rt afl-fuzz -i in -o out ./harness abcd
 
-harness: harness
+harness: harness.c
   $(CC) $(CFLAGS) -o harness harness.c
