@@ -6,4 +6,4 @@ afl: harness
   RMR_SEED_RT=./routes.rt afl-fuzz -i in -o out ./harness abcd
 
 harness: harness
-$(CC) $(CFLAGS) -o harness harness.c
+  $(CC) $(CFLAGS) -o harness harness.c

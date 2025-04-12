@@ -3,8 +3,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/epoll.h>
-#include <time.h>
 
 #include <rmr/rmr.h>
 
@@ -15,6 +13,8 @@
 
 // Sends a message and receives a message, times out after 100ms.
 
+
+
 int main( int argc, char** argv ) {
   void*              mrc;              // msg router context
   rmr_mbuf_t*        sbuf;             // send buffer
@@ -22,17 +22,15 @@ int main( int argc, char** argv ) {
   char*              listen_port = "4560";
   int                mtype       = 0;
   char               input_payload[1024]={0};
-  
 //   if (argc != 2) {
 //     fprintf(stderr, "Wrong number of arguments\n");
 //     exit(1);
 //   }
 
-  if( (mrc = rmr_init( listen_port, 1024, RMRFL_NOTHREAD )) == NULL ) {
+  if( (mrc = rmr_init( listen_port, 1024, RMRFL_NONE )) == NULL ) {
     fprintf( stderr, "<DEMO> unable to initialise RMR\n" );
     exit( 1 );
   }
-  int payload_len = read(STDIN_FILENO, input_payload, 1024);
 //   strncpy(input_payload, argv[1], 1024);
 //  int payload_len = sizeof(input_payload) / sizeof(char);
   sbuf = rmr_alloc_msg(mrc, 1024);    // alloc 1st send buf; subsequent bufs alloc on send
@@ -41,6 +39,8 @@ int main( int argc, char** argv ) {
   while( ! rmr_ready( mrc ) ) {        // must have route table
     sleep( 1 );                        // wait til we get one
   }
+
+  int payload_len = read(STDIN_FILENO, input_payload, 1024);
   sbuf->mtype = mtype;                      // fill in the message bits
   sbuf->len =  payload_len + 1; // send full ascii-z string
   sbuf->state = 0;
