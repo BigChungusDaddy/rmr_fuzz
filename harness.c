@@ -15,7 +15,7 @@
 
 
 
-int main( int argc, char** argv ) {
+int main(int argc, char** argv ) {
   void*              mrc;              // msg router context
   rmr_mbuf_t*        sbuf;             // send buffer
   rmr_mbuf_t*        rbuf;             // received buffer
@@ -43,7 +43,7 @@ int main( int argc, char** argv ) {
 
   int payload_len = read(STDIN_FILENO, input_payload, 1024);
   sbuf->mtype = mtype;                      // fill in the message bits
-  sbuf->len =  payload_len + 1; // send full ascii-z string
+  sbuf->len =  payload_len; // send full ascii-z string
   sbuf->state = 0;
   memcpy(sbuf->payload, input_payload, sbuf->len);
 
