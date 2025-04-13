@@ -21,15 +21,10 @@ int main(int argc, char** argv ) {
   rmr_mbuf_t*        rbuf;             // received buffer
   char*              listen_port = "4560";
   int                mtype       = 0;
-  char               input_payload[1024]={0};
+  char               input_payload[256]={0};
   rmr_whid_t whid = -1;   // wormhole id for sending
 
-//   if (argc != 2) {
-//     fprintf(stderr, "Wrong number of arguments\n");
-//     exit(1);
-//   }
-
-  if( (mrc = rmr_init( listen_port, 1024, RMRFL_NOTHREAD )) == NULL ) {
+  if( (mrc = rmr_init( listen_port, 256, RMRFL_NOTHREAD )) == NULL ) {
     fprintf( stderr, "<DEMO> unable to initialise RMR\n" );
     exit( 1 );
   }
@@ -39,20 +34,25 @@ int main(int argc, char** argv ) {
   rbuf = NULL;                         // don't need to alloc receive buffer
 
 
-  whid = rmr_wh_open(mrc, "localhost:6123");
+  whid = rmr_wh_open(mrc, "localhost:4560");
 
-  int payload_len = read(STDIN_FILENO, input_payload, 1024);
+  int payload_len = read(STDIN_FILENO, input_payload, 256);
   sbuf->mtype = mtype;                      // fill in the message bits
   sbuf->len =  payload_len; // send full ascii-z string
   sbuf->state = 0;
   memcpy(sbuf->payload, input_payload, sbuf->len);
-
+  rmr_bytes2meid(sbuf, input_payload, payload_len);
+  rmr_bytes2xact(sbuf, input_payload, payload_len);
+  rmr_get_meid(sbuf, NULL);
+  rmr_get_xact(sbuf, NULL);
   if( RMR_WH_CONNECTED( whid ) ) {
     sbuf = rmr_wh_send_msg( mrc, whid, sbuf );
     if (sbuf->state != RMR_OK)
       printf("send failed");
     else
       printf("send succeeded");
+  } else {
+    printf("wormhole not connected");
   }
 
   // sbuf = rmr_send_msg( mrc, sbuf );       // send & get next buf to fill in
