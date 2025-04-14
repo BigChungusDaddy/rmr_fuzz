@@ -3,7 +3,7 @@ CC := afl-clang-fast
 CFLAGS := -lrmr_si -I$(RMR_INC_PATH) 
 
 afl: harness
-    RMR_SEED_RT=./routes.rt afl-fuzz -i in -o out ./harness abcd
+    RMR_SEED_RT=./routes.rt RMR_RTG_SVC=4560 afl-fuzz -i in -o out ./harness @@
 
 harness: harness.c
-    $(CC) -o harness harness.c $(CFLAGS)
+    afl-clang-fast -o harness harness.c librmr_si.a
