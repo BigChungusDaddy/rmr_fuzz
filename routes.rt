@@ -1,3 +1,5 @@
 newrt | start | rt-0100
 mse | 0 | -1 | 127.0.0.1:4560
-newrt | end | 1
+mse | 12010 | 12010 | 127.0.0.1:4560
+msg | 1 | 1 | %meid
+newrt | end | 3

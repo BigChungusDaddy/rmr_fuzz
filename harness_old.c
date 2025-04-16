@@ -59,9 +59,10 @@ int main(int argc, char** argv ) {
   }
   sbuf = rmr_realloc_payload(sbuf, payload_len, 0, 0);
   sbuf2 = rmr_realloc_payload(sbuf, payload_len - 1, 1, 1);
-  sbuf->mtype = mtype;                      // fill in the message bits
+  sbuf->mtype = atoi(input_payload);                      // fill in the message bits
   sbuf->len =  payload_len; // send full ascii-z string
-  sbuf->state = 0;
+  sbuf->state = atoi(input_payload);
+  sbuf->sub_id = atoi(input_payload);
   rmr_bytes2payload(sbuf, input_payload, payload_len);
   rmr_bytes2meid(sbuf, input_payload, payload_len);
   rmr_bytes2xact(sbuf, input_payload, payload_len);
@@ -73,13 +74,16 @@ int main(int argc, char** argv ) {
     sbuf = rmr_send_msg( mrc, sbuf );     // w/ simple spin that doesn't give up
   }
 
-  rbuf = rmr_rcv_msg( mrc, rbuf); // wait for a message; timeout after 100ms
+  rbuf = rmr_torcv_msg( mrc, rbuf, 1); // wait for a message; timeout after 1ms
   if (rbuf->state != RMR_OK) {
     exit(1);
   }
   printf("%s", rbuf->payload);
+  rmr_get_meid(rbuf, NULL);
+  rmr_get_xact(rbuf, NULL);
   rmr_free_msg(sbuf);
-  rmr_wh_close(mrc, whid);
+  rmr_free_msg(rbuf);
+  rmr_call(mrc, sbuf);
   rmr_close(mrc);
   free(input_payload);
 
