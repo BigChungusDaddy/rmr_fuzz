@@ -2,4 +2,9 @@ newrt | start | rt-0100
 mse | 0 | -1 | 127.0.0.1:4560
 mse | 12010 | 12010 | 127.0.0.1:4560
 msg | 1 | 1 | %meid
-newrt | end | 3
+msg | 2 | -1 | %meid
+newrt | end
+
+meid_map | start | id-0101
+mme_ar | 1270.0.0.1:4560 | meid1 meid2
+meid_map | end | 1

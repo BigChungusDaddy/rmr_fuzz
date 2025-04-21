@@ -4,12 +4,9 @@ git clone https://github.com/o-ran-sc/ric-plt-lib-rmr
 cd ./ric-plt-lib-rmr
 mkdir build
 cd build
-export AFL_LLVM_LAF_ALL=1
-export AFL_LLVM_NGRAM_SIZE=4
-export AFL_LLVM_CALLER=1
-cmake -D CMAKE_C_COMPILER=afl-clang-fast CMAKE_CXX_COMPILER=afl-clang-fast++ -DDEV_PKG=1 ..
+cmake -D CMAKE_CXX_FLAGS=-g CMAKE_C_FLAGS=-g -DDEV_PKG=1 ..
 make rmr_si_static
-cp librmr_si.a /users/axetang/rmr_fuzz/librmr_si.a
+cp librmr_si.a /users/axetang/rmr_fuzz/librmr_si_d.a
 cd ..
 cp ./src/rmr/common/include/rmr.h /users/axetang/rmr_fuzz/rmr.h
 cd ..

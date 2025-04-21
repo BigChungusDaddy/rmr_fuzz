@@ -61,7 +61,7 @@ int main(int argc, char** argv ) {
   sbuf2 = rmr_realloc_payload(sbuf, payload_len - 1, 1, 1);
   sbuf->mtype = atoi(input_payload);                      // fill in the message bits
   sbuf->len =  payload_len; // send full ascii-z string
-  sbuf->state = atoi(input_payload);
+  sbuf->state = 0;
   sbuf->sub_id = atoi(input_payload);
   rmr_bytes2payload(sbuf, input_payload, payload_len);
   rmr_bytes2meid(sbuf, input_payload, payload_len);

@@ -824,7 +824,7 @@ static void* init( char* uproto_port, int def_msg_size, int flags ) {
 		if( static_rtc ) {
 			ctx->flags |= CFL_NO_RTACK;
 			read_static_rt((void *)ctx, 0);
-		        ctx->rtable_ready = 1;
+		    ctx->rtable_ready = 1;
 			//rmr_vlog( RMR_VL_INFO, "rmr_init: file based route table only for context on port %s\n", uproto_port );
 			//if( pthread_create( &ctx->rtc_th,  NULL, rtc_file, (void *) ctx ) ) { 	// kick the rt collector thread as just file reader
 			//	rmr_vlog( RMR_VL_WARN, "rmr_init: unable to start static route table collector thread: %s", strerror( errno ) );
